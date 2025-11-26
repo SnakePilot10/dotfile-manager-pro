@@ -18,5 +18,20 @@
         "source": "dotfiles/misc/prueba_config.conf",
         "target": "~/prueba_config.conf",
         "profile": "Test"
+    },
+    {
+        "source": "dotfiles/auto-scan/.zshrc",
+        "target": "~/.zshrc",
+        "profile": "Home"
+    },
+    {
+        "source": "dotfiles/auto-scan/.gitconfig",
+        "target": "~/.gitconfig",
+        "profile": "Home"
+    },
+    {
+        "source": "dotfiles/auto-scan/settings.json",
+        "target": "~/.config/VSCodium/User/settings.json",
+        "profile": "Home"
     }
 ]

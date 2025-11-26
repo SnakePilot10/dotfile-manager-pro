@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dotfile-manager-pro"
+version = "2.0.0"
+description = "Professional Dotfile Manager with TUI and Git integration"
+readme = "README.md"
+authors = [{ name = "SnakePilot10", email = "SnakePilot10@users.noreply.github.com" }]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Android",
+]
+dependencies = [
+    "typer",
+    "rich",
+    "textual",
+]
+requires-python = ">=3.10"
+
+[project.scripts]
+dotfile-pro = "cli:app"
+
+[tool.setuptools]
+py-modules = ["cli"]
+packages = ["src"]

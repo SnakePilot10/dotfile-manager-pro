@@ -1,0 +1,22 @@
+[
+    {
+        "source": "dotfiles/bash/.bashrc",
+        "target": "~/.bashrc",
+        "profile": "Home"
+    },
+    {
+        "source": "dotfiles/kde/kdeglobals",
+        "target": "~/.config/kdeglobals",
+        "profile": "Work"
+    },
+    {
+        "source": "dotfiles/alacritty/alacritty.toml",
+        "target": "~/.config/alacritty/alacritty.toml",
+        "profile": "Work"
+    },
+    {
+        "source": "dotfiles/misc/prueba_config.conf",
+        "target": "~/prueba_config.conf",
+        "profile": "Test"
+    }
+]

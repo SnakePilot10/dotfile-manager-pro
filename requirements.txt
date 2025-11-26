@@ -1,2 +1,4 @@
 typer
 rich
+textual
+textual

@@ -4,6 +4,7 @@ from textual.containers import Horizontal, Vertical, Container
 from pathlib import Path
 import shutil
 from .config_manager import ConfigManager
+from .paths import DOTFILES_REPO_PATH
 
 class DotfileItem(ListItem):
     def __init__(self, label_text: str, source_path: str) -> None:
@@ -15,7 +16,8 @@ class DotfileTUI(App):
     
     CSS = """
     Screen { layout: vertical; }
-    #sidebar { width: 30; background: $panel; border-right: solid $accent; height: 100%; }
+    /* Responsive layout using percentages/fractions */
+    #sidebar { width: 30%; background: $panel; border-right: solid $accent; height: 100%; min-width: 20; }
     #editor-area { height: 1fr; border: solid $success; margin: 0 0 1 0; }
     .file-item { padding: 1; }
     
@@ -28,7 +30,7 @@ class DotfileTUI(App):
         background: $surface; 
         margin: 0 0 1 0; 
     }
-    Button { margin: 0 1; min-width: 22; border: none; }
+    Button { margin: 0 1; min-width: 20; border: none; }
     
     /* Colores para diferenciar funciones */
     #btn-save { background: $success; color: black; text-style: bold; }
@@ -59,9 +61,9 @@ class DotfileTUI(App):
                 self.editor = TextArea(language="bash", theme="dracula", id="editor-area")
                 yield self.editor
                 with Container(id="buttons"):
-                    yield Button("💾 GUARDAR (Disco)", id="btn-save")
-                    yield Button("🛡️ CREAR BACKUP", id="btn-backup")
-                    yield Button("↩️ RESTAURAR (.bak)", id="btn-restore")
+                    yield Button("💾 GUARDAR", id="btn-save")
+                    yield Button("🛡️ BACKUP", id="btn-backup")
+                    yield Button("↩️ RESTAURAR", id="btn-restore")
         yield Footer()
 
     def on_mount(self) -> None:
@@ -77,12 +79,11 @@ class DotfileTUI(App):
             self.list_view.append(item)
 
     def on_list_view_selected(self, event: ListView.Selected) -> None:
-        REPO_DIR = Path(__file__).resolve().parent.parent
         # Buscar el objeto dotfile basado en la ruta seleccionada
         for df in self.manager.dotfiles:
             if str(df.source_path) == event.item.source_path:
                 self.current_dotfile = df
-                full_path = REPO_DIR / df.source_path
+                full_path = DOTFILES_REPO_PATH / df.source_path
                 try:
                     content = full_path.read_text(encoding="utf-8")
                     self.editor.text = content
@@ -107,8 +108,7 @@ class DotfileTUI(App):
     def action_save_file(self):
         """Guarda SOLO en el disco duro (Modifica el archivo real)."""
         if not self.current_dotfile: return
-        REPO_DIR = Path(__file__).resolve().parent.parent
-        full_path = REPO_DIR / self.current_dotfile.source_path
+        full_path = DOTFILES_REPO_PATH / self.current_dotfile.source_path
         
         try:
             full_path.write_text(self.editor.text, encoding="utf-8")
@@ -119,8 +119,7 @@ class DotfileTUI(App):
     def action_backup_file(self):
         """Crea una copia .bak oculta en la misma carpeta."""
         if not self.current_dotfile: return
-        REPO_DIR = Path(__file__).resolve().parent.parent
-        full_path = REPO_DIR / self.current_dotfile.source_path
+        full_path = DOTFILES_REPO_PATH / self.current_dotfile.source_path
         # Crea un archivo .bak (ej: alacritty.toml.bak)
         backup_path = full_path.with_suffix(full_path.suffix + ".bak")
         
@@ -136,8 +135,7 @@ class DotfileTUI(App):
     def action_restore_file(self):
         """Recupera el contenido desde el archivo .bak local."""
         if not self.current_dotfile: return
-        REPO_DIR = Path(__file__).resolve().parent.parent
-        full_path = REPO_DIR / self.current_dotfile.source_path
+        full_path = DOTFILES_REPO_PATH / self.current_dotfile.source_path
         backup_path = full_path.with_suffix(full_path.suffix + ".bak")
         
         if not backup_path.exists():

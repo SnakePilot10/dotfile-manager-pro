@@ -1,6 +1,7 @@
 from pathlib import Path
 import shutil
 from typing import Optional
+import os
 
 class Dotfile:
     def __init__(self, source_path: Path, target_path: Path, profile: str = "default"):
@@ -18,8 +19,12 @@ class Dotfile:
             
             if force:
                 try:
-                    expanded_target.unlink()
-                    print(f"🗑️ Archivo existente eliminado: {expanded_target.name}")
+                    if expanded_target.is_dir() and not expanded_target.is_symlink():
+                        shutil.rmtree(expanded_target)
+                        print(f"🗑️ Directorio existente eliminado: {expanded_target.name}")
+                    else:
+                        expanded_target.unlink()
+                        print(f"🗑️ Archivo existente eliminado: {expanded_target.name}")
                 except Exception as e:
                     print(f"❌ Error al eliminar {expanded_target.name}: {e}")
                     return False

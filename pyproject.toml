@@ -1,29 +1,29 @@
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project]
+[tool.poetry]
 name = "dotfile-manager-pro"
-version = "2.0.0"
-description = "Professional Dotfile Manager with TUI and Git integration"
-readme = "README.md"
-authors = [{ name = "SnakePilot10", email = "SnakePilot10@users.noreply.github.com" }]
-license = { text = "MIT" }
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: POSIX :: Linux",
-    "Operating System :: Android",
-]
-dependencies = [
-    "typer",
-    "rich",
-    "textual",
-]
-requires-python = ">=3.10"
+version = "1.0.0"
+description = "A sophisticated dotfile manager."
+authors = ["SnakePilot10 <snakepilot10@example.com>"]
 
-[project.scripts]
-dotfile-pro = "cli:app"
+[tool.poetry.dependencies]
+python = ">=3.8"
+click = "^8.0"
 
-[tool.setuptools]
-py-modules = ["cli"]
-packages = ["src"]
+[tool.poetry.dev-dependencies]
+pytest = "^6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dotmanager = "dotmanager.cli:main"
+
+[tool.configuration]
+config_dir = "${XDG_CONFIG_HOME}/dotmanager"
+data_dir = "${XDG_DATA_HOME}/dotmanager"
+cache_dir = "${XDG_CACHE_HOME}/dotmanager"
+
+[packages]
+dotmanager]
+include = ["dotmanager/**", "scripts/**"]
+layout = "src"

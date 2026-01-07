@@ -1,3 +1,36 @@
-.venv/
+# Python / Environment
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+
+# Distribution / Build
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Testing / Code Quality
+.pytest_cache/
+.coverage
+htmlcov/
+.jules/
+
+# IDEs
+.vscode/
+.idea/
+
+# --- USER DATA PROTECTION ---
+# Ignorar la configuración y los archivos del usuario
+# para que el repo solo contenga el código fuente de la herramienta.
+dotfiles.json
+dotfiles/
+auto-scan/
+.backups/
+
+# Logs
+*.log
+*.bak

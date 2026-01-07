@@ -1,28 +1,37 @@
-#!/bin/bash
-# Instalador simple para Dotfile Manager Pro
-APP_DIR="$(pwd)"
-SHELL_CONFIG=""
+#!/usr/bin/env bash
+set -e
 
-# Detectar Shell
-if [ -n "$ZSH_VERSION" ]; then
-    SHELL_CONFIG="$HOME/.zshrc"
-elif [ -n "$BASH_VERSION" ]; then
-    SHELL_CONFIG="$HOME/.bashrc"
-else
-    SHELL_CONFIG="$HOME/.bashrc"
+echo "🔧 Installing Dotfile Manager Pro (Refactored)..."
+
+# Ensure Python 3
+if ! command -v python3 &> /dev/null; then
+    echo "❌ Python 3 not found."
+    exit 1
 fi
 
-echo "🔧 Instalando Dotfile Manager Pro..."
-echo "📂 Directorio: $APP_DIR"
+# Create Virtual Environment if missing
+if [ ! -d ".venv" ]; then
+    echo "📦 Creating virtual environment..."
+    python3 -m venv .venv
+fi
 
-# Permisos
-chmod +x cli.py
+# Install Dependencies
+echo "⬇️ Installing requirements..."
+./.venv/bin/pip install -r requirements.txt
 
-# Crear Alias
-echo "" >> "$SHELL_CONFIG"
-echo "# Alias para Dotfile Manager Pro" >> "$SHELL_CONFIG"
-echo "alias dotfile-pro='$APP_DIR/.venv/bin/python $APP_DIR/cli.py'" >> "$SHELL_CONFIG"
+# Setup Alias
+SHELL_CONFIG="$HOME/.bashrc"
+[ -n "$ZSH_VERSION" ] && SHELL_CONFIG="$HOME/.zshrc"
 
-echo "✅ Alias 'dotfile-pro' agregado a $SHELL_CONFIG"
-echo "⚠️  Por favor, ejecuta: source $SHELL_CONFIG"
-echo "🚀 Uso: dotfile-pro [status|link|save|update]"
+ALIAS_CMD="alias dotfile-pro='$(pwd)/.venv/bin/python $(pwd)/src/interface/cli.py'"
+
+if ! grep -Fq "dotfile-pro" "$SHELL_CONFIG"; then
+    echo "" >> "$SHELL_CONFIG"
+    echo "# Dotfile Manager Pro" >> "$SHELL_CONFIG"
+    echo "$ALIAS_CMD" >> "$SHELL_CONFIG"
+    echo "✅ Alias added to $SHELL_CONFIG"
+else
+    echo "⚠️ Alias already exists."
+fi
+
+echo "✨ Installation Complete. Run 'source $SHELL_CONFIG' then 'dotfile-pro'"

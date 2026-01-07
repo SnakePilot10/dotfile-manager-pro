@@ -1,40 +1,67 @@
-# 🚀 Dotfile Manager Profesional (v2.0.0)
+# 🛠️ Dotfile Manager Pro
 
-> **Gestor de entornos de ingeniería.** Combina una CLI robusta con una Interfaz Gráfica de Terminal (TUI) para administrar configuraciones en Linux y Android de forma segura y nativa.
-
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
-![Arch Linux](https://img.shields.io/badge/Arch-Native%20Package-1793d1)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Stable-success)
+Un gestor de configuraciones (dotfiles) profesional, diseñado para ser **seguro, atómico y reproducible**, inspirado en la filosofía declarativa.
 
 ## ✨ Características Principales
 
-- **🖥️ TUI Interactiva:** Navega, edita y gestiona archivos visualmente (`dotfile-pro ui`).
-- **🛡️ Modo Sandbox:** Edita con seguridad. Usa **Backups Locales** (`.bak`) y restaura al instante sin ensuciar Git.
-- **🔍 Auto-Descubrimiento:** El comando `scan` detecta automáticamente apps instaladas y sugiere importarlas.
-- **📦 Paquete Nativo:** Se instala en el sistema (`/usr/bin`), funcionando en cualquier shell.
-- **☁️ Cloud Sync:** Sincronización Git bajo demanda.
+- **🛡️ Operaciones Atómicas:** Los cambios en la configuración se realizan mediante escrituras atómicas para prevenir corrupción de datos.
+- **🛡️ Importación Segura:** Implementa una estrategia de `Copia -> Verificación -> Enlace` en lugar de mover archivos directamente.
+- **📦 Backups Automáticos:** Crea respaldos con marca de tiempo en `.backups/` antes de realizar cualquier operación destructiva.
+- **🔍 Escaneo Inteligente:** Detecta automáticamente configuraciones comunes en tu sistema que aún no están siendo gestionadas.
+- **🖥️ Interfaz Visual (TUI):** Incluye una potente interfaz de terminal para editar tus archivos directamente.
+- **🔗 Git Local:** Gestión de versiones integrada de forma local para privacidad total.
 
-## 📦 Instalación
+## 🚀 Instalación
 
-### Opción A: Arch Linux (Nativo)
+Clona el repositorio y ejecuta el instalador:
+
 ```bash
-git clone https://github.com/SnakePilot10/dotfile-manager-pro.git
+git clone https://github.com/tu-usuario/dotfile-manager-pro.git
 cd dotfile-manager-pro
-makepkg -si
+./install.sh
+source ~/.bashrc  # O ~/.zshrc
 ```
 
-### Opción B: Universal (Pip)
+## 📖 Uso Rápido
+
+### 1. Escanear el sistema
+Encuentra archivos de configuración conocidos y agrégalos fácilmente:
 ```bash
-git clone https://github.com/SnakePilot10/dotfile-manager-pro.git
-cd dotfile-manager-pro
-pip install .
+dotfile-pro scan
 ```
 
-## 🎮 Uso
+### 2. Añadir un archivo manualmente
+```bash
+dotfile-pro add ~/.config/alacritty/alacritty.toml --profile Desktop --folder terminal
+```
 
-- **GUI:** `dotfile-pro ui` (Recomendado)
-- **CLI:** `dotfile-pro scan`, `add`, `status`, `save`
+### 3. Verificar estado
+```bash
+dotfile-pro status
+```
 
----
-*Desarrollado con ingeniería de precisión por SnakePilot10.*
+### 4. Vincular archivos (en una máquina nueva)
+```bash
+dotfile-pro link --force
+```
+
+### 5. Interfaz Visual
+```bash
+dotfile-pro ui
+```
+
+## 🏗️ Arquitectura
+
+El proyecto está dividido en capas para máxima mantenibilidad:
+- `src/core`: Modelos de datos y definiciones base.
+- `src/services`: Lógica de negocio (File system, Config, Scanner).
+- `src/interface`: Capas de interacción (CLI con Typer, TUI con Textual).
+
+## 🔒 Privacidad
+
+Este proyecto está configurado para **no subir tus datos personales** a GitHub por defecto. El archivo `.gitignore` excluye:
+- `dotfiles.json`
+- Carpeta `dotfiles/`
+- Carpeta `.backups/`
+
+Esto permite compartir el **código de la herramienta** sin exponer tus secretos o rutas de sistema.

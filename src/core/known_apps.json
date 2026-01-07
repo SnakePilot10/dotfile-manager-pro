@@ -1,0 +1,15 @@
+{
+    "Zsh": ".zshrc",
+    "Bash": ".bashrc",
+    "Starship": ".config/starship.toml",
+    "Neovim": ".config/nvim/init.lua",
+    "Vim": ".vimrc",
+    "Alacritty": ".config/alacritty/alacritty.toml",
+    "Kitty": ".config/kitty/kitty.conf",
+    "Git Config": ".gitconfig",
+    "Tmux": ".tmux.conf",
+    "VSCode": ".config/VSCodium/User/settings.json",
+    "Fish": ".config/fish/config.fish",
+    "Nano": ".nanorc",
+    "Xresources": ".Xresources"
+}

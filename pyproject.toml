@@ -22,8 +22,7 @@ dependencies = [
 requires-python = ">=3.10"
 
 [project.scripts]
-dotfile-pro = "cli:app"
+dotfile-pro = "src.interface.cli:app"
 
 [tool.setuptools]
-py-modules = ["cli"]
 packages = ["src"]

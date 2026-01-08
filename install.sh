@@ -23,7 +23,10 @@ echo "⬇️ Installing requirements..."
 SHELL_CONFIG="$HOME/.bashrc"
 [ -n "$ZSH_VERSION" ] && SHELL_CONFIG="$HOME/.zshrc"
 
-ALIAS_CMD="alias dotfile-pro='$(pwd)/.venv/bin/python $(pwd)/src/interface/cli.py'"
+# Reinstall package to update entry points
+./.venv/bin/pip install -e .
+
+ALIAS_CMD="alias dotfile-pro='$(pwd)/.venv/bin/dotfile-pro'"
 
 if ! grep -Fq "dotfile-pro" "$SHELL_CONFIG"; then
     echo "" >> "$SHELL_CONFIG"

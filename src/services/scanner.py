@@ -3,6 +3,11 @@ import os
 import re
 from pathlib import Path
 from typing import List, Tuple, Dict, Set
+try:
+    from importlib.resources import files
+except ImportError:
+    from importlib_resources import files # Backport for older python
+
 from services.config_service import ConfigService
 
 class SystemScanner:
@@ -25,12 +30,13 @@ class SystemScanner:
         self.home = Path.home()
 
     def _load_known_apps(self) -> Dict[str, str]:
-        """Carga rutas conocidas desde el JSON."""
-        json_path = Path(__file__).resolve().parent.parent / "core" / "known_apps.json"
+        """Carga rutas conocidas desde el JSON usando importlib para compatibilidad con ZipApps."""
         try:
-            with open(json_path, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
+            # "core" es el paquete, "known_apps.json" es el recurso
+            resource_content = files("core").joinpath("known_apps.json").read_text(encoding="utf-8")
+            return json.loads(resource_content)
+        except Exception as e:
+            # Fallback silencioso o log de debug si fuera necesario
             return {}
 
     def scan(self) -> List[Tuple[str, Path]]:

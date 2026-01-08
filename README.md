@@ -6,7 +6,7 @@ Un gestor de configuraciones (dotfiles) profesional, diseñado para ser **seguro
 
 - **🛡️ Operaciones Atómicas:** Prevención total de corrupción de datos.
 - **📦 Single Binary:** Se compila en un solo archivo ejecutable portable.
-- **🔍 Escaneo Inteligente:** Detecta configuraciones huérfanas en tu sistema.
+- **🔍 Escaneo Heurístico:** Motor avanzado que descubre configs en `~/.config`, `~/.termux` y raíz, ignorando basura.
 - **🖥️ Interfaz Visual (TUI):** Edita tus configs con **resaltado de sintaxis** y guardado atómico.
 - **🔗 Git Local:** Privacidad total. Tus datos no se suben a la nube por defecto.
 

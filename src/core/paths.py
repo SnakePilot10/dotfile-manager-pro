@@ -1,18 +1,26 @@
 from pathlib import Path
 import os
+import sys
 
 class AppContext:
     def __init__(self):
-        # Allow overriding the repo root via env var, else assume current working dir
-        # or a specific standard location. For this refactor, we stick to CWD 
-        # as the 'repo' to maintain behavior with the existing structure, 
-        # but sanitized.
-        self.repo_root = Path(os.getcwd()).resolve()
+        # 1. Try Environment Variable
+        env_repo = os.getenv("DOTFILE_REPO")
+        if env_repo:
+            self.repo_root = Path(env_repo).resolve()
+        else:
+            # 2. Default to CWD (Standard "Stow-like" behavior)
+            self.repo_root = Path(os.getcwd()).resolve()
+
         self.config_path = self.repo_root / "dotfiles.json"
         self.backup_dir = self.repo_root / ".backups"
+
+    def verify_repo(self) -> bool:
+        """Returns True if a valid repo structure is found."""
+        return self.config_path.exists()
 
     def get_absolute_source(self, relative_source: Path) -> Path:
         return (self.repo_root / relative_source).resolve()
 
-# Singleton instance for easy access
+# Singleton instance
 context = AppContext()

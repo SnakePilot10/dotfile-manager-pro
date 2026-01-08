@@ -1,67 +1,84 @@
 # 🛠️ Dotfile Manager Pro
 
-Un gestor de configuraciones (dotfiles) profesional, diseñado para ser **seguro, atómico y reproducible**, inspirado en la filosofía declarativa.
+Un gestor de configuraciones (dotfiles) profesional, diseñado para ser **seguro, atómico y reproducible**. Funciona en cualquier distribución Linux (Arch, Debian, Fedora) y Android (Termux).
 
 ## ✨ Características Principales
 
-- **🛡️ Operaciones Atómicas:** Los cambios en la configuración se realizan mediante escrituras atómicas para prevenir corrupción de datos.
-- **🛡️ Importación Segura:** Implementa una estrategia de `Copia -> Verificación -> Enlace` en lugar de mover archivos directamente.
-- **📦 Backups Automáticos:** Crea respaldos con marca de tiempo en `.backups/` antes de realizar cualquier operación destructiva.
-- **🔍 Escaneo Inteligente:** Detecta automáticamente configuraciones comunes en tu sistema que aún no están siendo gestionadas.
-- **🖥️ Interfaz Visual (TUI):** Incluye una potente interfaz de terminal para editar tus archivos directamente.
-- **🔗 Git Local:** Gestión de versiones integrada de forma local para privacidad total.
+- **🛡️ Operaciones Atómicas:** Prevención total de corrupción de datos.
+- **📦 Single Binary:** Se compila en un solo archivo ejecutable portable.
+- **🔍 Escaneo Inteligente:** Detecta configuraciones huérfanas en tu sistema.
+- **🖥️ Interfaz Visual (TUI):** Edita tus configs sin salir de la terminal.
+- **🔗 Git Local:** Privacidad total. Tus datos no se suben a la nube por defecto.
 
 ## 🚀 Instalación
 
-Clona el repositorio y ejecuta el instalador:
+### Opción A: Desde Código Fuente (Universal)
+
+Requisitos: `python3`, `git`, `make`.
 
 ```bash
-git clone https://github.com/tu-usuario/dotfile-manager-pro.git
+git clone https://github.com/SnakePilot10/dotfile-manager-pro.git
 cd dotfile-manager-pro
-./install.sh
-source ~/.bashrc  # O ~/.zshrc
+
+# 1. Configurar entorno
+make setup
+
+# 2. Construir ejecutable
+make build
+
+# 3. Instalar (requiere sudo en PC, directo en Termux)
+make install
 ```
 
-## 📖 Uso Rápido
+### Opción B: Arch Linux (Nativo)
 
-### 1. Escanear el sistema
-Encuentra archivos de configuración conocidos y agrégalos fácilmente:
 ```bash
+makepkg -si
+```
+
+## 📖 Guía de Uso
+
+Una vez instalado, el comando `dotfile-pro` estará disponible globalmente.
+
+### 1. Inicializar Repositorio
+Ve a la carpeta donde quieres guardar tus dotfiles (o crea una nueva):
+```bash
+mkdir ~/mis-dotfiles && cd ~/mis-dotfiles
 dotfile-pro scan
 ```
 
-### 2. Añadir un archivo manualmente
+### 2. Gestionar Archivos
 ```bash
-dotfile-pro add ~/.config/alacritty/alacritty.toml --profile Desktop --folder terminal
-```
+# Escanear sistema automáticamente
+dotfile-pro scan
 
-### 3. Verificar estado
-```bash
+# Añadir archivo manual
+dotfile-pro add ~/.bashrc --profile Laptop
+
+# Ver estado de enlaces
 dotfile-pro status
 ```
 
-### 4. Vincular archivos (en una máquina nueva)
-```bash
-dotfile-pro link --force
-```
-
-### 5. Interfaz Visual
+### 3. Interfaz Gráfica (TUI)
+Para una experiencia visual:
 ```bash
 dotfile-pro ui
 ```
 
-## 🏗️ Arquitectura
+## 🤝 Contribución
 
-El proyecto está dividido en capas para máxima mantenibilidad:
-- `src/core`: Modelos de datos y definiciones base.
-- `src/services`: Lógica de negocio (File system, Config, Scanner).
-- `src/interface`: Capas de interacción (CLI con Typer, TUI con Textual).
+¡Las contribuciones son bienvenidas! El proyecto sigue una arquitectura modular limpia:
 
-## 🔒 Privacidad
+- **`src/core`**: Modelos de datos (Dotfile) y configuración de rutas.
+- **`src/services`**: Lógica de negocio pura (I/O, JSON, Git).
+- **`src/interface`**: CLI (Typer) y TUI (Textual).
 
-Este proyecto está configurado para **no subir tus datos personales** a GitHub por defecto. El archivo `.gitignore` excluye:
-- `dotfiles.json`
-- Carpeta `dotfiles/`
-- Carpeta `.backups/`
+### Pasos para desarrollar:
+1.  Clonar el repo.
+2.  `make setup` para crear el entorno virtual.
+3.  Hacer cambios.
+4.  `make test` para asegurar que no rompiste nada.
+5.  Enviar PR.
 
-Esto permite compartir el **código de la herramienta** sin exponer tus secretos o rutas de sistema.
+## 📜 Licencia
+MIT License.

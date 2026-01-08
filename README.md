@@ -74,7 +74,8 @@ dotfile-pro status
 ## 🛡️ Seguridad y Robustez
 
 - **Safe Import 2.0:** Si intentas importar un archivo que ya existe en el repositorio, la herramienta hará una copia de seguridad de la versión vieja del repositorio y actualizará con tu versión local actual. ¡Nunca más perderás tu configuración activa!
-- **Rutas Inteligentes:** Detección automática de la ubicación del repositorio, sin importar desde dónde ejecutes el comando.
+- **📦 Binario Portable (ZipApp):** La herramienta se empaqueta con todas sus dependencias en un solo archivo `.pyz`. Puedes mover el ejecutable a cualquier parte (`/usr/bin`, `~/bin`, etc.) y funcionará sin necesidad de instalar librerías externas en el sistema.
+- **Rutas Inteligentes:** Detección automática de la ubicación del repositorio (CWD o `~/dotfiles`), permitiendo usar `dotfile-pro` desde cualquier directorio del sistema.
 - **Prevención de Colisiones:** Los archivos escaneados se organizan automáticamente en subcarpetas por aplicación (ej. `nvim/init.lua`, `zsh/.zshrc`) para evitar conflictos de nombres.
 
 ### 3. Interfaz Gráfica (TUI)

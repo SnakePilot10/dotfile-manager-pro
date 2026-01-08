@@ -27,17 +27,21 @@ class FileService:
 
         # 2. Copy (Non-destructive first)
         if repo_dest.exists():
-             # If it exists in repo, we don't overwrite unless explicitly handled.
-             # For now, we assume if it's in repo, we just want to link it.
-             pass 
-        else:
-            try:
-                if original_path.is_dir():
-                    shutil.copytree(original_path, repo_dest)
-                else:
-                    shutil.copy2(original_path, repo_dest)
-            except Exception as e:
-                raise FileOperationError(f"Failed to copy file to repo: {e}")
+            # If it exists in repo, backup the repo version and overwrite with new source
+            # This ensures we are actually "importing" the current state, not restoring old state.
+            FileService.backup_file(repo_dest)
+            if repo_dest.is_dir():
+                shutil.rmtree(repo_dest)
+            else:
+                repo_dest.unlink()
+        
+        try:
+            if original_path.is_dir():
+                shutil.copytree(original_path, repo_dest)
+            else:
+                shutil.copy2(original_path, repo_dest)
+        except Exception as e:
+            raise FileOperationError(f"Failed to copy file to repo: {e}")
 
         # 3. Create Symlink (this verifies the copy implicitly by needing the path)
         # Calculate portable target (e.g. ~/.zshrc)

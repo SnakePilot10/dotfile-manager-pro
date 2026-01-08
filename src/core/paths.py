@@ -9,8 +9,20 @@ class AppContext:
         if env_repo:
             self.repo_root = Path(env_repo).resolve()
         else:
-            # 2. Default to CWD (Standard "Stow-like" behavior)
-            self.repo_root = Path(os.getcwd()).resolve()
+            # 2. Try to find relative to this source file (useful if running from source/venv)
+            # path: src/core/paths.py -> repo_root is parents[2]
+            source_loc = Path(__file__).resolve()
+            possible_root = source_loc.parent.parent.parent
+            if (possible_root / "dotfiles.json").exists():
+                self.repo_root = possible_root
+            else:
+                 # 3. Default fallback: ~/dotfiles (Common convention)
+                 home_repo = Path.home() / "dotfiles"
+                 if (home_repo / "dotfiles.json").exists():
+                     self.repo_root = home_repo
+                 else:
+                    # 4. Fallback to CWD (Legacy behavior, but risky)
+                    self.repo_root = Path(os.getcwd()).resolve()
 
         self.config_path = self.repo_root / "dotfiles.json"
         self.backup_dir = self.repo_root / ".backups"

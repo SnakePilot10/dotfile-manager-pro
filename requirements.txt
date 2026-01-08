@@ -1,4 +1,5 @@
 typer
 rich
 textual
-pytestshiv
+pytest
+shiv

@@ -46,7 +46,24 @@ class DotfileTUI(App):
     def load_files(self):
         self.list_view.clear()
         for df in self.config_service.load_config():
-            self.list_view.append(DotfileItem(f"{df.profile} | {df.source.name}", df))
+            # Logic to extract a friendly "App Name" from the path
+            parts = df.source.parts
+            filename = df.source.name
+            
+            if len(parts) > 1:
+                # Use parent folder as category (e.g. "nvim" from "nvim/init.lua")
+                category = parts[-2]
+                # Cleanup if it's directly in auto-scan without subfolder (legacy)
+                if category == "auto-scan":
+                    category = "Misc"
+            else:
+                category = "Root"
+            
+            # Formatting: "Neovim: init.lua"
+            category_display = category.replace("-", " ").title()
+            label = f"{category_display}: {filename}"
+            
+            self.list_view.append(DotfileItem(label, df))
 
     def on_list_view_selected(self, event: ListView.Selected):
         self.current_dotfile = event.item.dotfile

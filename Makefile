@@ -29,19 +29,45 @@ build:
 	@chmod +x $(DIST_DIR)/$(APP_NAME)
 	@echo "✅ Ejecutable creado en $(DIST_DIR)/$(APP_NAME)"
 
-# 4. Instalación global
+# 4. Instalación global inteligente (Detecta Termux vs Linux normal)
 install: build
-	@echo "📦 Instalando en /usr/local/bin..."
-	@if [ -w /usr/local/bin ]; then \
-		cp $(DIST_DIR)/$(APP_NAME) /usr/local/bin/; \
+	@echo "📦 Detectando entorno de instalación..."
+	@if [ -n "$(PREFIX)" ]; then \
+		echo "📱 Entorno Termux detectado (PREFIX=$(PREFIX))"; \
+		mkdir -p $(PREFIX)/bin; \
+		cp $(DIST_DIR)/$(APP_NAME) $(PREFIX)/bin/; \
+		chmod +x $(PREFIX)/bin/$(APP_NAME); \
+		echo "✨ Instalado en $(PREFIX)/bin/$(APP_NAME)"; \
 	else \
-		echo "⚠️  Se requieren permisos de root para instalar en /usr/local/bin"; \
-		sudo cp $(DIST_DIR)/$(APP_NAME) /usr/local/bin/; \
+		echo "🐧 Entorno Linux estándar detectado"; \
+		if [ -w /usr/local/bin ]; then \
+			cp $(DIST_DIR)/$(APP_NAME) /usr/local/bin/; \
+		else \
+			echo "🔒 Elevando privilegios con sudo..."; \
+			sudo cp $(DIST_DIR)/$(APP_NAME) /usr/local/bin/; \
+		fi; \
+		echo "✨ Instalado en /usr/local/bin/$(APP_NAME)"; \
 	fi
-	@echo "✨ Instalación completada. Ejecuta '$(APP_NAME)' desde cualquier lugar."
+	@echo "✅ ¡Listo! Ejecuta '$(APP_NAME)' para empezar."
 
 # 5. Limpieza
 clean:
 	rm -rf $(BUILD_DIR) $(DIST_DIR) *.spec __pycache__ .pytest_cache .venv
 	find . -name "*.pyc" -delete
 	find . -name "__pycache__" -delete
+
+# 6. Desinstalación
+uninstall:
+	@echo "🗑️ Desinstalando Dotfile Manager Pro..."
+	@if [ -n "$(PREFIX)" ]; then \
+		rm -f $(PREFIX)/bin/$(APP_NAME); \
+		echo "✅ Eliminado de $(PREFIX)/bin/$(APP_NAME)"; \
+	else \
+		if [ -w /usr/local/bin ]; then \
+			rm -f /usr/local/bin/$(APP_NAME); \
+		else \
+			echo "🔒 Elevando privilegios con sudo para desinstalar..."; \
+			sudo rm -f /usr/local/bin/$(APP_NAME); \
+		fi; \
+		echo "✅ Eliminado de /usr/local/bin/$(APP_NAME)"; \
+	fi

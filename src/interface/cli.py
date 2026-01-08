@@ -36,18 +36,29 @@ def scan():
     console.print("")
 
     if Confirm.ask("Do you want to import detected files?"):
+        imported_files = False
         for app_name, path in candidates:
             if Confirm.ask(f"Add [cyan]{app_name}[/cyan] ({path.name})?"):
-                # Reuse the add logic via services
+                # Preguntar por el perfil
+                profile = Confirm.ask(f"Assign to 'default' profile?", default=True)
+                if not profile:
+                    profile_name = console.input("[bold yellow]Enter profile name: [/bold yellow]")
+                else:
+                    profile_name = "default"
+
                 try:
-                    rel_path = Path("auto-scan") / path.name
-                    new_dotfile = FileService.safe_import(path, rel_path, "default")
+                    # Fix: Use app_name as subfolder to avoid collisions (e.g. nvim/init.lua vs emacs/init.el)
+                    safe_app_name = "".join(c for c in app_name if c.isalnum() or c in ('-', '_')).strip()
+                    rel_path = Path("auto-scan") / safe_app_name / path.name
+                    new_dotfile = FileService.safe_import(path, rel_path, profile_name)
                     config_service.add_dotfile(new_dotfile)
-                    console.print(f"[green]✅ Imported {app_name}[/green]")
+                    console.print(f"[green]✅ Imported {app_name} to profile '{profile_name}'[/green]")
+                    imported_files = True
                 except Exception as e:
                     console.print(f"[red]❌ Failed to import {app_name}: {e}[/red]")
         
-        LocalGit.commit_changes("Imported files via scan")
+        if imported_files:
+            LocalGit.commit_changes("Imported files via scan")
 
 @app.command()
 def ui():

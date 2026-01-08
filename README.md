@@ -36,6 +36,18 @@ make install
 makepkg -si
 ```
 
+## 🗑️ Desinstalación
+
+Si deseas eliminar la herramienta de tu sistema:
+
+```bash
+# Opción Recomendada
+make uninstall
+
+# Opción Alternativa
+./uninstall.sh
+```
+
 ## 📖 Guía de Uso
 
 Una vez instalado, el comando `dotfile-pro` estará disponible globalmente.
@@ -49,7 +61,7 @@ dotfile-pro scan
 
 ### 2. Gestionar Archivos
 ```bash
-# Escanear sistema automáticamente
+# Escanear sistema automáticamente (Detecta cambios y conflictos de forma segura)
 dotfile-pro scan
 
 # Añadir archivo manual
@@ -59,8 +71,14 @@ dotfile-pro add ~/.bashrc --profile Laptop
 dotfile-pro status
 ```
 
+## 🛡️ Seguridad y Robustez
+
+- **Safe Import 2.0:** Si intentas importar un archivo que ya existe en el repositorio, la herramienta hará una copia de seguridad de la versión vieja del repositorio y actualizará con tu versión local actual. ¡Nunca más perderás tu configuración activa!
+- **Rutas Inteligentes:** Detección automática de la ubicación del repositorio, sin importar desde dónde ejecutes el comando.
+- **Prevención de Colisiones:** Los archivos escaneados se organizan automáticamente en subcarpetas por aplicación (ej. `nvim/init.lua`, `zsh/.zshrc`) para evitar conflictos de nombres.
+
 ### 3. Interfaz Gráfica (TUI)
-Para una experiencia visual:
+Para una experiencia visual con nombres de archivos amigables:
 ```bash
 dotfile-pro ui
 ```

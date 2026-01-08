@@ -19,9 +19,21 @@ fi
 echo "⬇️ Installing requirements..."
 ./.venv/bin/pip install -r requirements.txt
 
-# Setup Alias
+# Setup Alias or Symlink
 SHELL_CONFIG="$HOME/.bashrc"
 [ -n "$ZSH_VERSION" ] && SHELL_CONFIG="$HOME/.zshrc"
+
+# Try to use make install if 'make' is available
+if command -v make &> /dev/null; then
+    echo "🛠️ Make found. Using Makefile for robust installation..."
+    make setup
+    make install
+    echo "✅ Installation via Makefile complete."
+    exit 0
+fi
+
+# Fallback: Manual Alias Setup
+echo "⚠️ Make not found. Falling back to manual setup..."
 
 # Reinstall package to update entry points
 ./.venv/bin/pip install -e .

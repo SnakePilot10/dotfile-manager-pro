@@ -25,7 +25,11 @@ test:
 build:
 	@echo "🔨 Construyendo ejecutable portable (ZipApp)..."
 	@mkdir -p $(DIST_DIR)
-	./.venv/bin/shiv -c dotfile-pro -o $(DIST_DIR)/$(APP_NAME) -p "/usr/bin/env python3" .
+	@rm -rf $(DIST_DIR)/target
+	# Instalar el paquete y dependencias en un directorio temporal para que la estructura sea plana/correcta
+	./.venv/bin/pip install . -t $(DIST_DIR)/target
+	# Crear el zipapp usando ese directorio como source
+	./.venv/bin/shiv --site-packages $(DIST_DIR)/target --compressed -o $(DIST_DIR)/$(APP_NAME) -p "/usr/bin/env python3" -e interface.cli:app
 	@chmod +x $(DIST_DIR)/$(APP_NAME)
 	@echo "✅ Ejecutable creado en $(DIST_DIR)/$(APP_NAME)"
 

@@ -1,11 +1,11 @@
 import json
-import tempfile
 import os
-from typing import List, Dict, Any
+import tempfile
+from typing import List
 from pathlib import Path
-from src.core.models import Dotfile
-from src.core.paths import context
-from src.core.exceptions import ConfigError
+from core.models import Dotfile
+from core.paths import context
+from core.exceptions import ConfigError
 
 class ConfigService:
     def __init__(self):

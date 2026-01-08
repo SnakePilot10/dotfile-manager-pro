@@ -3,7 +3,7 @@ import os
 import re
 from pathlib import Path
 from typing import List, Tuple, Dict, Set
-from src.services.config_service import ConfigService
+from services.config_service import ConfigService
 
 class SystemScanner:
     # Carpetas a ignorar completamente para evitar ruido y lentitud

@@ -1,9 +1,9 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, ListView, ListItem, Label, TextArea, Button
 from textual.containers import Horizontal, Vertical, Container
-from src.services.config_service import ConfigService
-from src.services.file_service import FileService
-from src.core.paths import context
+from services.config_service import ConfigService
+from services.file_service import FileService
+from core.paths import context
 
 class DotfileItem(ListItem):
     def __init__(self, label: str, dotfile) -> None:

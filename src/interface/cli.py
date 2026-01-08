@@ -3,11 +3,11 @@ from rich.console import Console
 from rich.table import Table
 from rich.prompt import Confirm
 from pathlib import Path
-from src.core.models import Dotfile
-from src.services.config_service import ConfigService
-from src.services.file_service import FileService
-from src.services.git_local import LocalGit
-from src.services.scanner import SystemScanner
+from core.models import Dotfile
+from services.config_service import ConfigService
+from services.file_service import FileService
+from services.git_local import LocalGit
+from services.scanner import SystemScanner
 
 app = typer.Typer(name="dotfile-pro", add_completion=False)
 console = Console()
@@ -64,7 +64,7 @@ def scan():
 def ui():
     """Launch Terminal UI"""
     try:
-        from src.interface.tui import DotfileTUI
+        from interface.tui import DotfileTUI
         DotfileTUI().run()
     except ImportError as e:
         console.print(f"[red]Error loading TUI: {e}[/red]")

@@ -1,8 +1,8 @@
 import pytest
 from pathlib import Path
-from src.core.models import Dotfile
-from src.services.file_service import FileService
-from src.services.config_service import ConfigService
+from core.models import Dotfile
+from services.file_service import FileService
+from services.config_service import ConfigService
 
 # Mocks or temporary directories would be used in a real scenario
 # Here we define the test structure

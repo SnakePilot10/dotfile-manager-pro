@@ -1,6 +1,5 @@
 import subprocess
-from rich.console import Console
-from src.core.paths import context
+from core.paths import context
 
 class LocalGit:
     """

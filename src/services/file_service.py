@@ -2,9 +2,9 @@ import shutil
 import os
 from pathlib import Path
 from datetime import datetime
-from src.core.models import Dotfile
-from src.core.paths import context
-from src.core.exceptions import FileOperationError, BackupError
+from core.models import Dotfile
+from core.paths import context
+from core.exceptions import FileOperationError, BackupError
 
 class FileService:
     @staticmethod

@@ -18,11 +18,17 @@ dependencies = [
     "typer",
     "rich",
     "textual",
+    "pytest",
+    "shiv",
 ]
 requires-python = ">=3.10"
 
 [project.scripts]
-dotfile-pro = "src.interface.cli:app"
+dotfile-pro = "interface.cli:app"
 
-[tool.setuptools]
-packages = ["src"]
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+testpaths = ["tests"]

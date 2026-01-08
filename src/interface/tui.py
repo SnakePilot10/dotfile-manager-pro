@@ -52,13 +52,32 @@ class DotfileTUI(App):
         self.current_dotfile = event.item.dotfile
         path = context.get_absolute_source(self.current_dotfile.source)
         if path.exists():
-            self.editor.text = path.read_text(encoding="utf-8")
+            content = path.read_text(encoding="utf-8")
+            self.editor.text = content
+            
+            # Dynamic Syntax Highlighting
+            ext = path.suffix.lower()
+            if ext in [".py", ".pyw"]: self.editor.language = "python"
+            elif ext in [".json", ".js"]: self.editor.language = "json"
+            elif ext in [".md", ".markdown"]: self.editor.language = "markdown"
+            elif ext in [".yml", ".yaml", ".toml", ".conf", ".ini"]: self.editor.language = "yaml"
+            elif ext in [".lua"]: self.editor.language = "python" # Textual might not have lua, python is close enough
+            elif ext in [".css"]: self.editor.language = "css"
+            else: self.editor.language = "bash"
 
     def on_button_pressed(self, event: Button.Pressed):
         if event.button.id == "btn-save" and self.current_dotfile:
             path = context.get_absolute_source(self.current_dotfile.source)
             try:
-                path.write_text(self.editor.text, encoding="utf-8")
-                self.notify("File saved!")
+                # Atomic Write
+                import tempfile
+                import os
+                dir_name = path.parent
+                with tempfile.NamedTemporaryFile("w", delete=False, dir=dir_name, encoding="utf-8") as tmp:
+                    tmp.write(self.editor.text)
+                    tmp_path = Path(tmp.name)
+                
+                os.replace(tmp_path, path)
+                self.notify(f"File saved: {path.name}")
             except Exception as e:
                 self.notify(f"Error: {e}", severity="error")
